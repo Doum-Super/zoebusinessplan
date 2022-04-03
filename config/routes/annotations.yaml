@@ -5,3 +5,9 @@ controllers:
 kernel:
     resource: ../../src/Kernel.php
     type: annotation
+
+bo_controllers:
+    resource: ../../src/Controller/BO
+    type: annotation
+    prefix:   '/bo'
+    name_prefix: bo_

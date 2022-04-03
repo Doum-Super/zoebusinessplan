@@ -1,0 +1,36 @@
+{{ form_start(form,  { 'attr': {'class': 'form'} }) }}
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-4">
+                {{ form_label(form.name) }}<span class="text-danger">*</span>
+                {{ form_widget(form.name) }}
+                <small class="text-danger">{{ form_errors(form.name) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.variableNumber) }}
+                {{ form_widget(form.variableNumber) }}
+                <small class="text-danger">{{ form_errors(form.variableNumber) }}</small>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    {{ form_label(form.modelFile) }}
+                    <div class="custom-file">
+                        {{ form_widget(form.modelFile.file) }}
+                        {% if '_add_' in currentRouteName or bpModel.modelFile|length == false %}
+                            {{ form_label(form.modelFile.file) }}
+                        {% else %}
+                            {{ form_label(form.modelFile.file, null, {'label': bpModel.modelFile.fileName}) }}
+                        {% endif %}
+                    </div>
+                    <small class="text-primary">Types de fichiers autorisés: xlsx, xls.</small> <br />
+                    <small class="text-primary">Taille maximale autorisée : 10Mo.</small>
+                    <smal class="text-danger">{{ form_errors(form.modelFile.file) }}</smal>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-right">
+        <a href="{{ path('bo_bp_model_list') }}" class="btn btn-secondary">Retour à la liste</a>
+        <button type="submit" class="btn btn-success ml-2">Enregistrer</button>
+    </div>
+{{ form_end(form) }}

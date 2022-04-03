@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<!--
+Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 4 & Angular 7
+Author: KeenThemes
+Website: http://www.keenthemes.com/
+Contact: support@keenthemes.com
+Follow: www.twitter.com/keenthemes
+Dribbble: www.dribbble.com/keenthemes
+Like: www.facebook.com/keenthemes
+Purchase: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+Renew Support: http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes
+License: You must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
+-->
+<html lang="fr">
+
+<!-- begin::Head -->
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="description" content="Updates and statistics">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+    <!--end::Fonts-->
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="{{ asset('/public/assets/bo/plugins/custom/datatables/datatables.bundle.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Page Vendors Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="{{ asset('/public/assets/bo/plugins/global/plugins.bundle.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/public/assets/bo/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/public/assets/bo/css/style.bundle.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <link href="{{ asset('/public/assets/bo/css/themes/layout/header/base/light.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/public/assets/bo/css/themes/layout/header/menu/light.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/public/assets/bo/css/themes/layout/brand/light.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('/public/assets/bo/css/themes/layout/aside/light.css?v=7.0.5') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Layout Themes-->
+	<link rel="shortcut icon" href="{{ asset('/public/assets/bo/media/logo.png') }}"/>
+
+	<style>
+		.gap-lg-10 {
+			gap: 2.5rem!important;
+		}
+		.end-0 {
+			right: 0!important;
+		}
+		.top-0 {
+			top: 0!important;
+		}
+		.text-end {
+			text-align: right;
+		}
+		.badge-light-warning {
+			color: #ffc700;
+			background-color: #fff8dd;
+		}
+		.badge-light-danger {
+			color: #f1416c;
+			background-color: #fff5f8;
+		}
+		.badge-light-primary {
+			color: #009ef7;
+			background-color: #f1faff;
+		}
+		.badge-light-success {
+			color: #50cd89;
+			background-color: #e8fff3;
+		}
+	</style>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<!-- end::Head -->
+
+<!-- begin::Body -->
+<body id="kt_body" class="header-fixed header-mobile-fixed aside-enabled aside-fixed aside-minimize-hoverable{% block extra_body_class %}{% endblock %}">
+	<!--begin::Main-->
+	<!--begin::Header Mobile-->
+	{% include 'bo/include/header-mobile.html.twig' %}
+	<!--end::Header Mobile-->
+	<div class="d-flex flex-column flex-root">
+		<!--begin::Page-->
+		<div class="d-flex flex-row flex-column-fluid page">
+
+			<!--begin::Aside-->
+			{% include 'bo/include/aside.html.twig' %}
+			<!--end::Aside-->
+
+			<!--begin::Wrapper-->
+			<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+				<!--begin::Header-->
+				{% include 'bo/include/header.html.twig' %}
+				<!--end::Header-->
+
+				<!--begin::Content-->
+				<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+					{% block breadcrumb %}{% endblock %}
+					{% block body %}{% endblock %}
+				</div>
+				<!--end::Content-->
+
+				<!--begin::Footer-->
+				{% include 'bo/include/footer.html.twig' %}
+				<!--end::Footer-->
+			</div>
+			<!--end::Wrapper-->
+		</div>
+		<!--end::Page-->
+	</div>
+	<!--end::Main-->
+
+	<!-- begin::User Panel-->
+	{#% if app.user %#}
+		{% include 'bo/include/user-panel.html.twig' %}
+	{#% endif %#}
+	<!-- end::User Panel-->
+
+
+	<script>var HOST_URL = "https://keenthemes.com/metronic/tools/preview";</script>
+	<!--begin::Global Config(global config for global JS scripts)-->
+		<script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+	<!--end::Global Config-->
+	<!--begin::Global Theme Bundle(used by all pages)-->
+	<script src="{{ asset('/public/assets/bo/plugins/global/plugins.bundle.js?v=7.0.5') }}"></script>
+	<script src="{{ asset('/public/assets/bo/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.5') }}"></script>
+	<script src="{{ asset('/public/assets/bo/js/scripts.bundle.js?v=7.0.5') }}"></script>
+	<!--end::Global Theme Bundle-->
+	<!--end::Page Vendors-->
+	<!--begin::Page Scripts(used by this page)-->
+	<script src="{{ asset('/public/assets/bo/js/pages/widgets.js?v=7.0.5') }}"></script>
+
+	{% block javascripts %}{% endblock %}
+	<!--end::Global App Bundle -->
+</body>
+<!-- end::Body -->
+</html>

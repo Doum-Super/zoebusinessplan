@@ -1,0 +1,95 @@
+{% extends 'bo/base.html.twig' %}
+
+{% block stylesheets %}
+	<!--begin::Page Vendors Styles(used by this page)-->
+	<link href="{{ asset('/public/assets/bo/plugins/custom/datatables/datatables.bundle.css?v=7.0.5') }}" rel="stylesheet" type="text/css" />
+	<!--end::Page Vendors Styles-->
+	<style>
+		.break { flex-basis: 100%; }
+	</style>
+{% endblock %}
+
+{% block body %}
+	<!--begin::Entry-->
+	<div class="d-flex flex-column-fluid">
+		<!--begin::Container-->
+		<div class="container">
+
+			<!--begin::Notice-->
+			{% block alert_info %}{% endblock %}
+			{% block alert_action %}{% endblock %}
+			<!--end::Notice-->
+
+			<!--begin::Card-->
+			<div class="card card-custom">
+				<div class="card-header">
+					<div class="card-title">
+						<h3 class="card-label">{% block list_title %}{% endblock %}</h3>
+					</div>
+					<div class="card-toolbar">
+						<!--begin::Button-->
+						{% block add_btn %}{% endblock %}
+						<!--end::Button-->
+					</div>
+
+					{% block custom_filter %}{% endblock %}
+				</div>
+				<div class="card-body">
+                    {% block main_content %}
+                        <!--begin: Datatable-->
+                        <table class="table table-bordered table-checkable mt-10" id="kt_datatable">
+                            {% block table_content %}{% endblock %}
+                        </table>
+                        <!--end: Datatable-->
+                    {% endblock %}
+				</div>
+			</div>
+			<!--end::Card-->
+		</div>
+		<!--end::Container-->
+	</div>
+	<!--end::Entry-->
+	{% block modal %}
+		<!-- Modal-->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<i aria-hidden="true" class="ki ki-close"></i>
+						</button>
+					</div>
+					<div class="modal-body">
+						Voulez-vous supprimer cet élément ?
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Annuler</button>
+						<a href="#" class="btn btn-primary font-weight-bold _delete_element_">Supprimer</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+	<!--begin::Page Vendors(used by this page)-->
+	<script src="{{ asset('/public/assets/bo/plugins/custom/datatables/datatables.bundle.js?v=7.0.5') }}"></script>
+	<!--end::Page Vendors-->
+	<!--begin::Page Scripts(used by this page)-->
+	<script src="{{ asset('/public/assets/bo/js/pages/crud/datatables/basic/headers.js?v=7.0.5') }}"></script>
+	<!--end::Page Scripts-->
+	<script type="text/javascript">
+        $(function () {
+            $('#deleteModal').on('shown.bs.modal', function (e) {
+                $this = $(this);
+                var $invoker = $(e.relatedTarget);
+                var attr = $invoker.attr('data-action');
+                if (typeof attr !== typeof undefined && attr !== false && attr === '_deletion_') {
+                    $this.find('._delete_element_').attr('href', $invoker.data('href'));
+                }
+            });
+        });
+	</script>
+{% endblock %}

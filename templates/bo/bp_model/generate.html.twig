@@ -1,0 +1,47 @@
+{% extends 'bo/base.html.twig' %}
+
+{% block body %}
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                {% block card_title %}Configuration des variables{% endblock %}
+                            </h3>
+                        </div>
+                        <!--begin::Form-->
+                        {{ form_start(form,  { 'attr': {'class': 'form'} }) }}
+                            <div class="card-body">
+                                {% set variableNumber = bpModel.variableNumber %}
+                                <div class="form-group row">
+                                    {% for i in 1..variableNumber %}
+                                        <div class="col-lg-3 mt-2">
+                                            {{ form_label(attribute(form, 'var_' ~ i ~ '')) }}
+                                            {{ form_widget(attribute(form, 'var_' ~ i ~ '')) }}
+                                            {{ form_errors(attribute(form, 'var_' ~ i ~ '')) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="card-footer text-right">
+                                <a href="{{ path('bo_bp_model_list') }}" class="btn btn-secondary">Retour à la liste</a>
+                                <button type="submit" class="btn btn-success ml-2">Generer</button>
+                            </div>
+                        {{ form_end(form) }}
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+{% endblock %}
