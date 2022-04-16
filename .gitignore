@@ -22,3 +22,6 @@
 .DS_Store
 src/.DS_Store
 public/.DS_Store
+
+/migrations-for-mysql-db/
+/migrations-for-mysql-db_00/
