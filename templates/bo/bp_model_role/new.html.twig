@@ -27,12 +27,46 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('/assets/admin/js/pages/crud/forms/widgets/select2.min.js?v=7.0.5') }}"></script>
+    <script src="{{ asset('/public/assets/bo/js/pages/crud/forms/widgets/select2.min.js?v=7.0.5') }}"></script>
     <script>
         jQuery(document).ready(function() {
             $('.select2').select2({
-                placeholder: "Choisir une ou plusieurs variables",
-                //allowClear: true
+                //placeholder: "Choisir une ou plusieurs variables",
+                allowClear: true,
+            });
+
+            {% if '_add' in currentRouteName %}
+                $("#bp_model_role_variables").empty().trigger('change');
+            {% endif %}
+
+            {#% if '_edit' in currentRouteName %}
+                let url = "{{ path('bo_bp_model_variables', {'id': 'bp_model_id'}) }}";
+                url = url.replace('bp_model_id', $('#bp_model_role_bpModel').val());
+
+                $.post(url, {}, function(data, error) {
+                    console.log(data);
+                    $('#bp_model_role_variables').select2({
+                        data: data,
+                    });
+                });
+            {% endif %#}
+
+
+            $('#bp_model_role_bpModel').on('change', function() {
+                var $this = $(this);
+                let url = "{{ path('bo_bp_model_variables', {'id': 'bp_model_id'}) }}";
+                url = url.replace('bp_model_id', $(this).val());
+
+                $.post(url, {}, function(data, error) {
+                    console.log(data);
+                    /*$("#bp_model_role_variables").empty('').trigger('change');
+                    $('#bp_model_role_variables').append(
+                        '<option value>Choisir un chapitre...</option>'
+                    );*/
+                    $('#bp_model_role_variables').select2({
+                        data: data,
+                    });
+                });
             });
         });
     </script>

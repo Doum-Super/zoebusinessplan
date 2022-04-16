@@ -44,9 +44,21 @@ class BPModel extends BaseEntity
      */
     private $bPModelRoles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Variable::class, mappedBy="bPModel", cascade={"persist", "remove"})
+     */
+    private $variables;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CustomerBP::class, mappedBy="bpModel")
+     */
+    private $customerBPs;
+
     public function __construct()
     {
         $this->bPModelRoles = new ArrayCollection();
+        $this->variables = new ArrayCollection();
+        $this->customerBPs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,6 +138,66 @@ class BPModel extends BaseEntity
             // set the owning side to null (unless already changed)
             if ($bPModelRole->getBpModel() === $this) {
                 $bPModelRole->setBpModel(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Variable>
+     */
+    public function getVariables(): Collection
+    {
+        return $this->variables;
+    }
+
+    public function addVariable(Variable $variable): self
+    {
+        if (!$this->variables->contains($variable)) {
+            $this->variables[] = $variable;
+            $variable->setBPModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariable(Variable $variable): self
+    {
+        if ($this->variables->removeElement($variable)) {
+            // set the owning side to null (unless already changed)
+            if ($variable->getBPModel() === $this) {
+                $variable->setBPModel(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerBP>
+     */
+    public function getCustomerBPs(): Collection
+    {
+        return $this->customerBPs;
+    }
+
+    public function addCustomerBP(CustomerBP $customerBP): self
+    {
+        if (!$this->customerBPs->contains($customerBP)) {
+            $this->customerBPs[] = $customerBP;
+            $customerBP->setBpModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerBP(CustomerBP $customerBP): self
+    {
+        if ($this->customerBPs->removeElement($customerBP)) {
+            // set the owning side to null (unless already changed)
+            if ($customerBP->getBpModel() === $this) {
+                $customerBP->setBpModel(null);
             }
         }
 

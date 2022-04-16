@@ -8,6 +8,7 @@ use App\Form\BPModelRoleType;
 use App\Form\BPModelType;
 use App\Repository\BPModelRepository;
 use App\Repository\BPModelRoleRepository;
+use App\Repository\VariableRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,7 +47,6 @@ class BPModelRoleController extends AbstractController
             return $this->redirectToRoute('bo_bp_model_role_list');
         }
 
-
         return $this->render('bo/bp_model_role/new.html.twig', [
             'form' => $form->createView(),
             'currentRouteName' => $request->get('_route')
@@ -54,7 +54,7 @@ class BPModelRoleController extends AbstractController
     }
 
     /**
-     * @Route("/bp-model-role/edit/{id}", name="bo_model_role_edit")
+     * @Route("/bp-model-role/edit/{id}", name="bp_model_role_edit")
     */
     public function edit(Request $request, EntityManagerInterface $entityManager, BPModelRole $bpModelRole): Response
     {
@@ -89,5 +89,25 @@ class BPModelRoleController extends AbstractController
 
         $this->addFlash('bp_model_role_deleted', 'Suppression effectuée');
         return $this->redirectToRoute('bo_bp_model_role_list');
+    }
+
+    /**
+     * @Route("/bp-model/variables/{id}", name="bp_model_variables")
+     * @param Request $request
+     * @param VariableRepository $variableRepository
+     * @return JsonResponse
+     */
+    public function variable(Request $request, VariableRepository $variableRepository, BPModel $bPModel)
+    {
+        $variables = $bPModel->getVariables();
+        $output = [];
+        foreach ($variables as $key => $variable) {
+            $output[] = [
+                'id' => $variable->getId(),
+                'text' => $variable->getName()
+            ];
+        }
+
+        return new JsonResponse($output);
     }
 }

@@ -45,32 +45,18 @@ class BPModelRoleRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return BPModelRole[] Returns an array of BPModelRole objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findBpModelByCustomer($id)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?BPModelRole
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
+            ->leftJoin('b.bpModel', 'bp')
+            ->leftJoin('b.role', 'role')
+            ->where('bp.id = :id')
+            ->andWhere('role.code = :role')
+            ->setParameter('id', $id)
+            ->setParameter('role', 'ROLE_CUSTOMER')
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

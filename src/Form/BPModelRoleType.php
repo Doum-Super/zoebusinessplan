@@ -20,7 +20,8 @@ class BPModelRoleType extends AbstractType
                 'class' => BPModel::class,
                 'choice_label' => 'name',
                 'label' => 'Modèle Business Plan',
-                'attr' => ['class' => 'form-control']
+                'attr' => ['class' => 'form-control'],
+                'placeholder' => 'Choisir un Business Plan'
             ])
             ->add('role', EntityType::class, [
                 'class' => Role::class,

@@ -44,7 +44,7 @@
                 </li>
 
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
-                    <li class="menu-item menu-item-submenu{% if '/administrator' in app.request.uri or '/merchant' in app.request.uri or '/customer' in app.request.uri %} menu-item-open{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+                    <li class="menu-item menu-item-submenu{% if '/administrator' in app.request.uri or '/customers' in app.request.uri or '/customer/' in app.request.uri %} menu-item-open{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
@@ -61,7 +61,7 @@
                                         <span class="menu-text">Administrateurs</span>
                                     </a>
                                 </li>
-                                <li class="menu-item{% if '/customer' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+                                <li class="menu-item{% if '/customers' in app.request.uri or '/customer/' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="{{ path('bo_customer_list') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-line"><span></span></i>
                                         <span class="menu-text">Clients</span>
@@ -72,7 +72,15 @@
                     </li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li class="menu-item{% if '/bp-model' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+                    <li class="menu-item{% if '/role' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="{{ path('bo_role_list') }}" class="menu-link menu-toggle">
+                            <i class="menu-bullet menu-bullet-line"><span></span></i>
+                            <span class="menu-text">Role</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="menu-item{% if '/bp-models' in app.request.uri or '/bp-model/' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
                         <a href="{{ path('bo_bp_model_list') }}" class="menu-link menu-toggle">
                             <i class="menu-bullet menu-bullet-line"><span></span></i>
                             <span class="menu-text">Modèles BP</span>
@@ -84,6 +92,22 @@
                         <a href="{{ path('bo_bp_model_role_list') }}" class="menu-link menu-toggle">
                             <i class="menu-bullet menu-bullet-line"><span></span></i>
                             <span class="menu-text">Attribution variable</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="menu-item{% if '/customer-bp-model' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="{{ path('bo_customer_bp_model_list') }}" class="menu-link menu-toggle">
+                            <i class="menu-bullet menu-bullet-line"><span></span></i>
+                            <span class="menu-text">BP Clients</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% if is_granted('ROLE_CUSTOMER') %}
+                    <li class="menu-item{% if '/customer-bp-model' in app.request.uri %} menu-item-active{% endif %}" aria-haspopup="true" data-menu-toggle="hover">
+                        <a href="{{ path('bo_customer_bp_model_list') }}" class="menu-link menu-toggle">
+                            <i class="menu-bullet menu-bullet-line"><span></span></i>
+                            <span class="menu-text">Mes Business Plans</span>
                         </a>
                     </li>
                 {% endif %}

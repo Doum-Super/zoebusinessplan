@@ -17,7 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use alhimik1986\PhpExcelTemplator\params\ExcelParam;
 use alhimik1986\PhpExcelTemplator\PhpExcelTemplator;
 use alhimik1986\PhpExcelTemplator\setters\CellSetterStringValue;
-
+use App\Entity\Variable;
+use App\Form\BPModelVariableConfigurationType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Html;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -152,6 +153,35 @@ class BPModelController extends AbstractController
     }
 
     /**
+     * @Route("/bp-model/variable-configuration/{id}", name="bp_model_variable_configuration")
+     */
+    public function variableConfiguration(Request $request, EntityManagerInterface $entityManager, BPModel $bpModel) {
+        if ($bpModel->getVariables()->isEmpty()) {
+            for ($i = 1; $i <= $bpModel->getVariableNumber(); $i++) {
+                $variable = new Variable();
+                $variable->setName('var_'.$i);
+                $bpModel->addVariable($variable);
+            }
+        }
+        
+        $form = $this->createForm(BPModelVariableConfigurationType::class, $bpModel);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            //$entityManager->persist($bpModel);
+            $entityManager->flush();
+
+            $this->addFlash('bp_model_variable_configured', 'Configuration de variables effectuées avec succès');
+            return $this->redirectToRoute('bo_bp_model_list');
+        }
+
+        return $this->render('bo/bp_model/variable-configuration.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
      * @Route("/bp-model/generate/{id}", name="bp_model_generate")
      */
     public function generate(Request $request, EntityManagerInterface $entityManager, BPModel $bpModel): Response
@@ -218,7 +248,7 @@ class BPModelController extends AbstractController
                 //$writer->setImagesRoot('http://zoebusinessplan.local/public/assets/bo');
                 $writer->setEmbedImages(false);
                 $hdr = $writer->generateHTMLHeader();
-                $sty = $writer->generateStyles(false);
+                //$sty = $writer->generateStyles(false);
                 $newstyle = <<<EOF
                 <style type='text/css'>
                     table.sheet0 {

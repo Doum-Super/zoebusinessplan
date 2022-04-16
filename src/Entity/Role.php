@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=RoleRepository::class)
  */
-class Role
+class Role extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -43,6 +43,11 @@ class Role
      * @ORM\OneToMany(targetEntity=BPModelRole::class, mappedBy="role")
      */
     private $bPModelRoles;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Variable::class, inversedBy="roles")
+     */
+    private $variables;
 
     public function __construct()
     {
@@ -145,6 +150,30 @@ class Role
                 $bPModelRole->setRole(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Variable>
+     */
+    public function getVariables(): Collection
+    {
+        return $this->variables;
+    }
+
+    public function addVariable(Variable $variable): self
+    {
+        if (!$this->variables->contains($variable)) {
+            $this->variables[] = $variable;
+        }
+
+        return $this;
+    }
+
+    public function removeVariable(Variable $variable): self
+    {
+        $this->variables->removeElement($variable);
 
         return $this;
     }

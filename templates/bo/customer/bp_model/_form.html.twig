@@ -1,0 +1,128 @@
+{{ form_start(form,  { 'attr': {'class': 'form'} }) }}
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-lg-4">
+                {{ form_label(form.businessName) }}<span class="text-danger">*</span>
+                {{ form_widget(form.businessName) }}
+                <small class="text-danger">{{ form_errors(form.businessName) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiaryFirstName) }}
+                {{ form_widget(form.beneficiaryFirstName) }}
+                <small class="text-danger">{{ form_errors(form.beneficiaryFirstName) }}</small>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    {{ form_label(form.cover) }}
+                    <div class="custom-file">
+                        {{ form_widget(form.cover.file) }}
+                        {% if customerBpModel.cover|length == false %}
+                            {{ form_label(form.cover.file) }}
+                        {% else %}
+                            {{ form_label(form.cover.file, null, {'label': bpModel.cover.fileName}) }}
+                        {% endif %}
+                    </div>
+                    <small class="text-primary">Types de fichiers autorisés: png, jpeg, jpg.</small> <br />
+                    <small class="text-primary">Taille maximale autorisée : 10Mo.</small>
+                    <smal class="text-danger">{{ form_errors(form.cover.file) }}</smal>
+                </div>
+            </div>
+            <div class="col-lg-4 d-none">
+                {{ form_label(form.bpModel) }}
+                {{ form_widget(form.bpModel) }}
+                <small class="text-danger">{{ form_errors(form.bpModel) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiaryLastName) }}<span class="text-danger">*</span>
+                {{ form_widget(form.beneficiaryLastName) }}
+                <small class="text-danger">{{ form_errors(form.beneficiaryLastName) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiarySex) }}
+                {{ form_widget(form.beneficiarySex) }}
+                <small class="text-danger">{{ form_errors(form.beneficiarySex) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiaryMaritalStatus) }}
+                {{ form_widget(form.beneficiaryMaritalStatus) }}
+                <small class="text-danger">{{ form_errors(form.beneficiaryMaritalStatus) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiaryPhoneNumber) }}<span class="text-danger">*</span>
+                {{ form_widget(form.beneficiaryPhoneNumber) }}
+                <small class="text-danger">{{ form_errors(form.beneficiaryPhoneNumber) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiaryAddress) }}
+                {{ form_widget(form.beneficiaryAddress) }}
+                <small class="text-danger">{{ form_errors(form.beneficiaryAddress) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.beneficiaryStudyLevel) }}
+                {{ form_widget(form.beneficiaryStudyLevel) }}
+                <small class="text-danger">{{ form_errors(form.beneficiaryStudyLevel) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-6">
+                {{ form_label(form.marketDescription) }}<span class="text-danger">*</span>
+                {{ form_widget(form.marketDescription) }}
+                <small class="text-danger">{{ form_errors(form.marketDescription) }}</small>
+            </div>
+            <div class="col-lg-6">
+                {{ form_label(form.projectDescription) }}
+                {{ form_widget(form.projectDescription) }}
+                <small class="text-danger">{{ form_errors(form.projectDescription) }}</small>
+            </div>
+        </div>
+
+        {% if form.variables|length %}
+            <div class="form-group">
+                {{ form_label(form.variables) }}
+                <div class="row mt-5">
+                    {#<div class="col-lg-2">
+                        {{ form_label(variable.name) }}
+                        {{ form_widget(variable.name) }}
+                        {{ form_errors(variable.name) }}
+                    </div>#}
+                    {% for variable in form.variables %}
+                        <div class="col-lg-3">
+                            {#{ form_label(variable.value) }#}
+                            <label for="">
+                                {% if variable.vars.data.definition|length %}
+                                    {{ variable.vars.data.definition }}
+                                {% else %}
+                                    {{ variable.vars.data.name }}
+                                {% endif %}
+                            </label>
+                            {{ form_widget(variable.value) }}
+                            {{ form_errors(variable.value) }}
+                        </div>
+                    {% endfor %}
+                    {#<div class="col-lg-3">
+                        {{ form_label(variable.type) }}
+                        {{ form_widget(variable.type) }}
+                        {{ form_errors(variable.type) }}
+                    </div>
+                    <div class="col-lg-4">
+                        {{ form_label(variable.definition) }}
+                        {{ form_widget(variable.definition) }}
+                        {{ form_errors(variable.definition) }}
+                    </div>#}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-footer text-right">
+        <a href="{{ path('bo_customer_bp_model_list') }}" class="btn btn-secondary">Retour à la liste</a>
+        <button type="submit" class="btn btn-success ml-2">Enregistrer</button>
+    </div>
+    {% do form.variables.setRendered %}
+{{ form_end(form) }}

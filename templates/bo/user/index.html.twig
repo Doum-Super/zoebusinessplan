@@ -19,18 +19,33 @@
 
 {% block add_btn %}
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a href="#{#{ path('bo_administrator_new') }#}" class="btn btn-primary font-weight-bolder">
-            <span class="svg-icon svg-icon-md">
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
-                        <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
-                    </g>
-                </svg>
-                <!--end::Svg Icon-->
-            </span>
-            Ajouter un administrateur
-        </a>
+        {% if type == 'administrator' %}
+            <a href="{{ path('bo_add_administrator') }}" class="btn btn-primary font-weight-bolder">
+                <span class="svg-icon svg-icon-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
+                            <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+                Ajouter un administrateur
+            </a>
+        {% else %}
+            <a href="{{ path('bo_add_customer') }}" class="btn btn-primary font-weight-bolder">
+                <span class="svg-icon svg-icon-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
+                            <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+                Ajouter un client
+            </a>
+        {% endif %}
     {% endif %}
 {% endblock %}
 
@@ -41,20 +56,16 @@
         <th>Prénom(s)</th>
         <th>Email</th>
         <th>Téléphone</th>
-        <th>Adresse</th>
-        <th>Ville</th>
         <th>Action</th>
     </tr>
     </thead>
     <tbody>
     {% for user in users %}
         <tr>
-            <td>{{ user.lastname }}</td>
-            <td>{{ user.firstname }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>{{ user.firstName }}</td>
             <td>{{ user.email }}</td>
-            <td>{{ user.contact }}</td>
-            <td>{{ user.district }}</td>
-            <td>{{ user.city }}</td>
+            <td>{{ user.phoneNumber }}</td>
             <td nowrap="nowrap" align="left">
                 <a href="#" class="d-block mb-3">
                     <span class="svg-icon svg-icon-primary">

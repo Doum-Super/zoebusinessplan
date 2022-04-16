@@ -25,24 +25,45 @@ class Variable extends BaseEntity
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $definition;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=BPModel::class, inversedBy="variables")
+     */
+    private $bPModel;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $value;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VariableValues::class, mappedBy="variable")
+     */
+    private $variableValues;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=CustomerBP::class, mappedBy="variables")
+     */
+    private $customerBPs;
 
     /**
      * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="variables")
      */
     private $roles;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=BPModelRole::class, mappedBy="variables")
-     */
-    private $bPModelRoles;
-
     public function __construct()
     {
+        $this->variableValues = new ArrayCollection();
+        $this->customerBPs = new ArrayCollection();
         $this->roles = new ArrayCollection();
-        $this->bPModelRoles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,9 +88,102 @@ class Variable extends BaseEntity
         return $this->definition;
     }
 
-    public function setDefinition(string $definition): self
+    public function setDefinition(?string $definition): self
     {
         $this->definition = $definition;
+
+        return $this;
+    }
+
+    public function getBPModel(): ?BPModel
+    {
+        return $this->bPModel;
+    }
+
+    public function setBPModel(?BPModel $bPModel): self
+    {
+        $this->bPModel = $bPModel;
+
+        return $this;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function setValue(?string $value): self
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VariableValues>
+     */
+    public function getVariableValues(): Collection
+    {
+        return $this->variableValues;
+    }
+
+    public function addVariableValue(VariableValues $variableValue): self
+    {
+        if (!$this->variableValues->contains($variableValue)) {
+            $this->variableValues[] = $variableValue;
+            $variableValue->setVariable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVariableValue(VariableValues $variableValue): self
+    {
+        if ($this->variableValues->removeElement($variableValue)) {
+            // set the owning side to null (unless already changed)
+            if ($variableValue->getVariable() === $this) {
+                $variableValue->setVariable(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerBP>
+     */
+    public function getCustomerBPs(): Collection
+    {
+        return $this->customerBPs;
+    }
+
+    public function addCustomerBP(CustomerBP $customerBP): self
+    {
+        if (!$this->customerBPs->contains($customerBP)) {
+            $this->customerBPs[] = $customerBP;
+            $customerBP->addVariable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerBP(CustomerBP $customerBP): self
+    {
+        if ($this->customerBPs->removeElement($customerBP)) {
+            $customerBP->removeVariable($this);
+        }
 
         return $this;
     }
@@ -96,33 +210,6 @@ class Variable extends BaseEntity
     {
         if ($this->roles->removeElement($role)) {
             $role->removeVariable($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, BPModelRole>
-     */
-    public function getBPModelRoles(): Collection
-    {
-        return $this->bPModelRoles;
-    }
-
-    public function addBPModelRole(BPModelRole $bPModelRole): self
-    {
-        if (!$this->bPModelRoles->contains($bPModelRole)) {
-            $this->bPModelRoles[] = $bPModelRole;
-            $bPModelRole->addVariable($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBPModelRole(BPModelRole $bPModelRole): self
-    {
-        if ($this->bPModelRoles->removeElement($bPModelRole)) {
-            $bPModelRole->removeVariable($this);
         }
 
         return $this;

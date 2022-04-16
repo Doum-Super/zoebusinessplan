@@ -1,0 +1,39 @@
+{% extends 'bo/base.html.twig' %}
+
+{% block body %}
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header">
+                            <h3 class="card-title">{% block card_title %}Ajout de role{% endblock %}</h3>
+                        </div>
+                        <!--begin::Form-->
+                        {{ include('bo/role/_form.html.twig') }}
+                        <!--end::Form-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+
+            </div>
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/assets/bo/js/pages/crud/forms/widgets/select2.min.js?v=7.0.5') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "Choisir une ou plusieurs permissions",
+                //allowClear: true
+            });
+        });
+    </script>
+{% endblock %}
