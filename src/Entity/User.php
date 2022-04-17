@@ -106,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         //$roles = [];
         foreach ($this->getUserRoles() as $role) {
-            $roles [] = $role->getName();
+            $roles [] = $role->getCode();
         }
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
