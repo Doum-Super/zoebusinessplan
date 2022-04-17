@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Role;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -35,6 +38,19 @@ class UserType extends AbstractType
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Numéro de téléphone',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Numéro de téléphone']
+            ])
+            ->add('userRoles', EntityType::class, [
+                'class' => Role::class,
+                'choice_label' => 'name',
+                'label' => 'Roles',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('r')
+                        //->select('r.name')
+                        ->orderBy('r.name', 'ASC');
+                },
+                'attr' => ['class' => 'select2 form-control', 'multiple' => 'multiple'],
+                'expanded' => false,
+                'multiple' => true
             ])
         ;
     }

@@ -57,14 +57,14 @@ class UserController extends AbstractController
         switch ($currentRouteName)
         {
             case 'bo_add_administrator':
-                $role = 'ROLE_ADMIN';
+                //$role = 'ROLE_ADMIN';
                 $form = $this->createForm(UserType::class, $user);
                 $redirectRoute = 'bo_administrator_list';
                 $flashKey = 'customer_added';
                 $defaultPlainPassword = 'admin';
                 break;
             case 'bo_add_customer':
-                $role = 'ROLE_CUSTOMER';
+                //$role = 'ROLE_CUSTOMER';
                 $form = $this->createForm(UserType::class, $user);
                 $redirectRoute = 'bo_customer_list';
                 $flashKey = 'customer_added';
@@ -77,7 +77,7 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles([$role]);
+            //$user->setRoles([$role]);
             $plainPassword = ($form->get('plainPassword')->getData() !== null ) ? $form->get('plainPassword')->getData() : $defaultPlainPassword;
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,

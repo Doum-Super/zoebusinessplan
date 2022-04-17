@@ -95,6 +95,10 @@
     <script src="{{ asset('/public/assets/bo/js/pages/crud/file-upload/image-input.js?v=7.0.5') }}"></script>
     <script>
         jQuery(document).ready(function() {
+            $('.select2').select2({
+                //placeholder: "Choisir une ou plusieurs variables",
+                allowClear: true,
+            });
         });
     </script>
 {% endblock %}

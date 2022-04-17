@@ -72,20 +72,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         /**
          * For PostgreSql
          */
-        $rsm = new ResultSetMapping();
+        /*$rsm = new ResultSetMapping();
         $query = $this->_em->createNativeQuery('SELECT * FROM public.user WHERE roles::text LIKE ?', $rsm);
         $query->setParameter(1, '%"' . $role . '"%');
 
-        return $query->getResult();
+        dump($query->getSQL()); die;
 
-        /**
-         * Form Mysql
-         */
-        /*return $this->createQueryBuilder('u')
-            ->where('u.roles::text LIKE :role')
-            ->setParameter('role', '%"' . $role . '"%')
+        return $query->getResult();*/
+
+
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.userRoles', 'ur')
+            //->where('u.roles LIKE :role')
+            ->where('ur.code = :role')
+            ->setParameter('role', $role)
             ->getQuery()
             ->getResult()
-            ;*/
+            ;
     }
 }
