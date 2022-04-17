@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -68,11 +69,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function findUsersByRole(string $role)
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.roles LIKE :role')
-            ->setParameter('role', '%'.$role.'%')
+        /**
+         * For PostgreSql
+         */
+        $rsm = new ResultSetMapping();
+        $query = $this->_em->createNativeQuery('SELECT * FROM public.user WHERE roles::text LIKE ?', $rsm);
+        $query->setParameter(1, '%"' . $role . '"%');
+
+        return $query->getResult();
+
+        /**
+         * Form Mysql
+         */
+        /*return $this->createQueryBuilder('u')
+            ->where('u.roles::text LIKE :role')
+            ->setParameter('role', '%"' . $role . '"%')
             ->getQuery()
             ->getResult()
-            ;
+            ;*/
     }
 }
