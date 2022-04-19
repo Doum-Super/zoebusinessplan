@@ -2,11 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\CustomerVariable;
 use App\Entity\Variable;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +17,6 @@ class CustomerVariableType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $variables = $options['variables'];
-        $bpModel = $options['bpModel'];
         $propertyPath = isset($options['property_path']) ? $options['property_path'] : null;
         $index = 0;
         if ($propertyPath !== null) {
@@ -27,27 +24,13 @@ class CustomerVariableType extends AbstractType
             $index = (int)$matches[1][0];
         }
         $builder
-            //->add('value')
-            //->add('customerBp')
-            ->add('variable', EntityType::class, [
-                'class' => Variable::class,
-                'choice_label' => 'name',
-                'label' => 'Variable',
-                'attr' => ['class' => 'form-control', 'placeholder' => 'Variable'],
-                'query_builder' => function(EntityRepository $er) use ($bpModel) {
-                    return $er->createQueryBuilder('v')
-                              //->where('v.bPModel = :bpModel')
-                              ->leftJoin('v.bPModel', 'bpModel')
-                              ->leftJoin('bpModel.bPModelRoles', 'bPModelRole')
-                              ->leftJoin('bPModelRole.role', 'role')
-                              ->where('bpModel.id = :id')
-                              ->andWhere('role.code = :role')
-                              ->setParameter('id', $bpModel->getId())
-                              ->setParameter('role', 'ROLE_CUSTOMER')
-                            ;
-                }
-            ])
+            /*->add('value', TextType::class, [
+                'label' => 'Valeur de la variable',
+                'attr' => ['class' => 'form-control', 'placeholder' => 'Valeur de la variable'],
+                'required' => false
+            ])*/
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($variables, $index) {
+                $variable = $event->getData();
                 $form = $event->getForm();
 
                 //dump($variables); die;
@@ -71,9 +54,8 @@ class CustomerVariableType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => CustomerVariable::class,
-            'variables' => [],
-            'bpModel' => null
+            'data_class' => Variable::class,
+            'variables' => []
         ]);
     }
 }

@@ -11,12 +11,15 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerBpType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $bpModel = $options['bpModel'];
         $builder
             ->add('businessName', TextType::class, [
                 'label' => "Raison sociale de l'entreprise",
@@ -26,6 +29,11 @@ class CustomerBpType extends AbstractType
             ->add('projectDescription', TextareaType::class, [
                 'label' => 'Description du projet',
                 'attr' => ['class' => 'summernote', 'placeholder' => 'Description du projet', 'rows' => 20],
+                'required' => false
+            ])
+            ->add('projectSummary', TextareaType::class, [
+                'label' => 'Resumé du projet',
+                'attr' => ['class' => 'summernote', 'placeholder' => 'Resumé du projet', 'rows' => 20],
                 'required' => false
             ])
             ->add('beneficiaryFirstName', TextType::class, [
@@ -81,14 +89,32 @@ class CustomerBpType extends AbstractType
                 'choice_label' => 'name',
                 'attr' => ['class' => 'form-control', 'placeholder']
             ])
-            ->add('variables', CollectionType::class, [
-                'entry_type' => CustomerVariableType::class,
-                'label' => 'Variables BP à modifier',
-                //'entry_options' => ['label' => false],
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($bpModel) {
+                $customerBp = $event->getData();
+                $variables = $customerBp->getVariables();
+                $form = $event->getForm();
+                $form->add('customerVariables', CollectionType::class, [
+                    'entry_type' => CustomerVariableType::class,
+                    'label' => 'Variables BP à modifier',
+                    'entry_options' => ['label' => false, 'variables' => $variables, 'bpModel' => $bpModel],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ]);
+            })
+            /*->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $customerBp = $event->getData();
+                $variables = $customerBp->getVariables();
+                $form = $event->getForm();
+                $form->add('variables', CollectionType::class, [
+                    'entry_type' => CustomerVariableType::class,
+                    'label' => 'Variables BP à modifier',
+                    'entry_options' => ['label' => false, 'variables' => $variables],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ]);
+            })*/
         ;
     }
 
@@ -96,6 +122,7 @@ class CustomerBpType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CustomerBP::class,
+            'bpModel' => null
         ]);
     }
 }

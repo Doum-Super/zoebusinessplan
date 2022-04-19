@@ -6,6 +6,7 @@ use App\Entity\BPModel;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,32 +46,18 @@ class BPModelRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return BPModel[] Returns an array of BPModel objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return BPModel[] Returns an array of BPModel objects
+     */
+    public function findMySubscriptionBp($user)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
+            //->andWhere('b.exampleField = :val')
+            ->leftJoin('b.customerBPs', 'cb', Join::WITH, 'cb.createdBy = :createdBy')
+            ->setParameter('createdBy', $user)
             ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?BPModel
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

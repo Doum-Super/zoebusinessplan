@@ -85,9 +85,20 @@ class CustomerBP extends BaseEntity
      */
     private $variables;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CustomerVariable::class, mappedBy="customerBp", cascade={"persist", "remove"})
+     */
+    private $customerVariables;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $projectSummary;
+
     public function __construct()
     {
         $this->variables = new ArrayCollection();
+        $this->customerVariables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -259,6 +270,48 @@ class CustomerBP extends BaseEntity
     public function removeVariable(Variable $variable): self
     {
         $this->variables->removeElement($variable);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerVariable>
+     */
+    public function getCustomerVariables(): Collection
+    {
+        return $this->customerVariables;
+    }
+
+    public function addCustomerVariable(CustomerVariable $customerVariable): self
+    {
+        if (!$this->customerVariables->contains($customerVariable)) {
+            $this->customerVariables[] = $customerVariable;
+            $customerVariable->setCustomerBp($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerVariable(CustomerVariable $customerVariable): self
+    {
+        if ($this->customerVariables->removeElement($customerVariable)) {
+            // set the owning side to null (unless already changed)
+            if ($customerVariable->getCustomerBp() === $this) {
+                $customerVariable->setCustomerBp(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProjectSummary(): ?string
+    {
+        return $this->projectSummary;
+    }
+
+    public function setProjectSummary(?string $projectSummary): self
+    {
+        $this->projectSummary = $projectSummary;
 
         return $this;
     }

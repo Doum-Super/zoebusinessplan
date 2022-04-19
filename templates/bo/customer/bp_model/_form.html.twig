@@ -19,7 +19,7 @@
                         {% if customerBpModel.cover|length == false %}
                             {{ form_label(form.cover.file) }}
                         {% else %}
-                            {{ form_label(form.cover.file, null, {'label': bpModel.cover.fileName}) }}
+                            {{ form_label(form.cover.file, null, {'label': customerBpModel.cover.fileName}) }}
                         {% endif %}
                     </div>
                     <small class="text-primary">Types de fichiers autorisés: png, jpeg, jpg.</small> <br />
@@ -83,27 +83,52 @@
             </div>
         </div>
 
-        {% if form.variables|length %}
+        <div class="form-group row">
+            <div class="col-lg-6">
+                {{ form_label(form.projectSummary) }}<span class="text-danger">*</span>
+                {{ form_widget(form.projectSummary) }}
+                <small class="text-danger">{{ form_errors(form.projectSummary) }}</small>
+            </div>
+        </div>
+
+        {% if form.customerVariables|length %}
             <div class="form-group">
-                {{ form_label(form.variables) }}
-                <div class="row mt-5">
+                {{ form_label(form.customerVariables) }}
+                
                     {#<div class="col-lg-2">
                         {{ form_label(variable.name) }}
                         {{ form_widget(variable.name) }}
                         {{ form_errors(variable.name) }}
                     </div>#}
-                    {% for variable in form.variables %}
-                        <div class="col-lg-3">
-                            {#{ form_label(variable.value) }#}
-                            <label for="">
-                                {% if variable.vars.data.definition|length %}
-                                    {{ variable.vars.data.definition }}
-                                {% else %}
-                                    {{ variable.vars.data.name }}
-                                {% endif %}
-                            </label>
-                            {{ form_widget(variable.value) }}
-                            {{ form_errors(variable.value) }}
+                    {% for customerVariable in form.customerVariables %}
+
+
+                        
+                        <div class="row mt-5">
+                            <div class="col-lg-4">
+                                {#{ form_label(variable.value) }#}
+                                <label for="">
+                                    {% if customerVariable.vars.data.variable.definition|length %}
+                                        {{ customerVariable.vars.data.variable.definition }}
+                                    {% else %}
+                                        {{ customerVariable.vars.data.variable.name }}
+                                    {% endif %}
+                                </label>
+                                {{ form_widget(customerVariable.variable) }}
+                                {{ form_errors(customerVariable.variable) }}
+                            </div>
+                            <div class="col-lg-4">
+                                {#<label for="">
+                                    {% if customerVariable.vars.data.variable.definition|length %}
+                                        {{ customerVariable.vars.data.variable.definition }}
+                                    {% else %}
+                                        {{ customerVariable.vars.data.variable.name }}
+                                    {% endif %}
+                                </label>#}
+                                {{ form_label(customerVariable.value) }}
+                                {{ form_widget(customerVariable.value) }}
+                                {{ form_errors(customerVariable.value) }}
+                            </div>
                         </div>
                     {% endfor %}
                     {#<div class="col-lg-3">
@@ -116,7 +141,7 @@
                         {{ form_widget(variable.definition) }}
                         {{ form_errors(variable.definition) }}
                     </div>#}
-                </div>
+                
             </div>
         {% endif %}
     </div>
@@ -124,5 +149,5 @@
         <a href="{{ path('bo_customer_bp_model_list') }}" class="btn btn-secondary">Retour à la liste</a>
         <button type="submit" class="btn btn-success ml-2">Enregistrer</button>
     </div>
-    {% do form.variables.setRendered %}
+    {% do form.customerVariables.setRendered %}
 {{ form_end(form) }}

@@ -59,11 +59,17 @@ class Variable extends BaseEntity
      */
     private $roles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CustomerVariable::class, mappedBy="variable")
+     */
+    private $customerVariables;
+
     public function __construct()
     {
         $this->variableValues = new ArrayCollection();
         $this->customerBPs = new ArrayCollection();
         $this->roles = new ArrayCollection();
+        $this->customerVariables = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,6 +216,36 @@ class Variable extends BaseEntity
     {
         if ($this->roles->removeElement($role)) {
             $role->removeVariable($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CustomerVariable>
+     */
+    public function getCustomerVariables(): Collection
+    {
+        return $this->customerVariables;
+    }
+
+    public function addCustomerVariable(CustomerVariable $customerVariable): self
+    {
+        if (!$this->customerVariables->contains($customerVariable)) {
+            $this->customerVariables[] = $customerVariable;
+            $customerVariable->setVariable($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerVariable(CustomerVariable $customerVariable): self
+    {
+        if ($this->customerVariables->removeElement($customerVariable)) {
+            // set the owning side to null (unless already changed)
+            if ($customerVariable->getVariable() === $this) {
+                $customerVariable->setVariable(null);
+            }
         }
 
         return $this;
