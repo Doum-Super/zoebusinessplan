@@ -27,11 +27,6 @@
                     <smal class="text-danger">{{ form_errors(form.cover.file) }}</smal>
                 </div>
             </div>
-            <div class="col-lg-4 d-none">
-                {{ form_label(form.bpModel) }}
-                {{ form_widget(form.bpModel) }}
-                <small class="text-danger">{{ form_errors(form.bpModel) }}</small>
-            </div>
         </div>
 
         <div class="form-group row">
@@ -94,16 +89,12 @@
         {% if form.customerVariables|length %}
             <div class="form-group">
                 {{ form_label(form.customerVariables) }}
-                
                     {#<div class="col-lg-2">
                         {{ form_label(variable.name) }}
                         {{ form_widget(variable.name) }}
                         {{ form_errors(variable.name) }}
                     </div>#}
                     {% for customerVariable in form.customerVariables %}
-
-
-                        
                         <div class="row mt-5">
                             <div class="col-lg-4">
                                 {#{ form_label(variable.value) }#}

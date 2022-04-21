@@ -58,7 +58,7 @@ class CustomerVariableType extends AbstractType
                     'required' => false
                 ];
         
-                if (isset($variables[$index]) && $variables[$index]->getType() === 'number') {
+                if (isset($variables[$index]) && null !== $variables[$index]->getVariable() && $variables[$index]->getVariable()->getType() === 'number') {
                     $params['html5'] = true;
                     $form
                         ->add('value', NumberType::class, $params);

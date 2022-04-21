@@ -81,11 +81,6 @@ class CustomerBP extends BaseEntity
     private $bpModel;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Variable::class, inversedBy="customerBPs")
-     */
-    private $variables;
-
-    /**
      * @ORM\OneToMany(targetEntity=CustomerVariable::class, mappedBy="customerBp", cascade={"persist", "remove"})
      */
     private $customerVariables;
@@ -246,30 +241,6 @@ class CustomerBP extends BaseEntity
     public function setBpModel(?BPModel $bpModel): self
     {
         $this->bpModel = $bpModel;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Variable>
-     */
-    public function getVariables(): Collection
-    {
-        return $this->variables;
-    }
-
-    public function addVariable(Variable $variable): self
-    {
-        if (!$this->variables->contains($variable)) {
-            $this->variables[] = $variable;
-        }
-
-        return $this;
-    }
-
-    public function removeVariable(Variable $variable): self
-    {
-        $this->variables->removeElement($variable);
 
         return $this;
     }

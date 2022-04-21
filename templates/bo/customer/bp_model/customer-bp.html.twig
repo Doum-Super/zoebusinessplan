@@ -1,6 +1,7 @@
 {% extends 'bo/base.html.twig' %}
 
 {% block stylesheets %}
+    {{ style|raw }}
     <style>
         #sheet0 { display: none; }
         .overlay .overlay-layer {
@@ -23,6 +24,15 @@
             font-size: 1rem;
             background-color: #dcdcdc;
             color: #000;
+        }
+        td.n {
+            display: none;
+        }
+        table > td {
+            border-bottom: 0 !important;
+            border-top: 0 !important;
+            border-right: 0 !important;
+            border-left: 0 !important;
         }
     </style>
 {% endblock %}

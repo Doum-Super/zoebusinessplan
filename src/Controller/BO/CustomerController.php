@@ -2,6 +2,7 @@
 
 namespace App\Controller\BO;
 
+use alhimik1986\PhpExcelTemplator\params\CallbackParam;
 use alhimik1986\PhpExcelTemplator\params\ExcelParam;
 use alhimik1986\PhpExcelTemplator\PhpExcelTemplator;
 use alhimik1986\PhpExcelTemplator\setters\CellSetterStringValue;
@@ -10,6 +11,7 @@ use App\Entity\BPModelRole;
 use App\Entity\CustomerBP;
 use App\Entity\CustomerVariable;
 use App\Form\CustomerBpType;
+use App\Helper\ControllerHelper;
 use App\Repository\BPModelRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -22,6 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CustomerController extends AbstractController
 {
+    use ControllerHelper;
+
     /**
      * @Route("/customer-bp-models", name="customer_bp_model_list")
      */
@@ -36,13 +40,13 @@ class CustomerController extends AbstractController
     /**
      * @Route("/customer-bp-model/configure/{id}", name="customer_bp_model_configure")
      */
-    public function configure(Request $request, EntityManagerInterface $entityManagerInterface, BPModel $bpModel)
+    public function configure(Request $request, EntityManagerInterface $entityManager, BPModel $bpModel)
     {
-        $bpModelByCustomer = $entityManagerInterface->getRepository(BPModelRole::class)->findBpModelByCustomer($bpModel->getId());
+        $bpModelByCustomer = $entityManager->getRepository(BPModelRole::class)->findBpModelByCustomer($bpModel->getId());
 
         $variables = ($bpModelByCustomer !== null) ? $bpModelByCustomer->getVariables() : [];
 
-        $customerBpModel = $entityManagerInterface->getRepository(CustomerBP::class)->findOneBy([
+        $customerBpModel = $entityManager->getRepository(CustomerBP::class)->findOneBy([
             'bpModel' => $bpModel,
             'createdBy' => $this->getUser()
         ]);
@@ -53,6 +57,7 @@ class CustomerController extends AbstractController
             foreach ($variables as $variable) {
                 $customerVariable = new CustomerVariable();
                 $customerVariable->setVariable($variable);
+                //$customerVariable->setCustomerBp($customerBpModel);
                 $customerBpModel->addCustomerVariable($customerVariable);
             }
         } /*else {
@@ -70,15 +75,16 @@ class CustomerController extends AbstractController
 
         $form = $this->createFormBuilder($customerBpModel);
 
-        $form = $this->createForm(CustomerBpType::class, $customerBpModel, ['bpModel' => $bpModel]);
+        $form = $this->createForm(CustomerBpType::class, $customerBpModel, ['bpModel' => $bpModel, 'variables' => $customerBpModel->getCustomerVariables()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManagerInterface->persist($customerBpModel);
-            $entityManagerInterface->flush();
+            $customerBpModel->setBpModel($bpModel);
+            $entityManager->persist($customerBpModel);
+            $entityManager->flush();
 
             return $this->redirectToRoute('bo_customer_bp_model_list');
-        }
+        } 
 
         return $this->render('bo/customer/bp_model/configure.html.twig', [
             'form' => $form->createView(),
@@ -168,6 +174,8 @@ class CustomerController extends AbstractController
         $data = $writer->generateSheetData();
         $footer = $writer->generateHTMLFooter();
 
+        $style = $writer->generateStyles();
+
         //$response = $header.$data.$footer;
         $html = $data;
 
@@ -196,7 +204,8 @@ class CustomerController extends AbstractController
 
         return $this->render('bo/customer/bp_model/customer-bp.html.twig', [
             'content' => $outputHtml,
-            'customerBpModel' => $customerBpModel
+            'customerBpModel' => $customerBpModel,
+            'style' => $style
         ]);
         
         //dump($outputHtml);

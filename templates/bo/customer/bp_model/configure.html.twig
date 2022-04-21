@@ -62,10 +62,10 @@
 
 {% block javascripts %}
     <script src="{{ asset('/public/assets/bo/js/pages/crud/file-upload/image-input.js?v=7.0.5') }}"></script>
-    <script src="{{ asset('/assets/admin/js/pages/crud/forms/editors/summernote.js?v=7.0.5') }}"></script>
+    {#<script src="{{ asset('/assets/admin/js/pages/crud/forms/editors/summernote.js?v=7.0.5') }}"></script>#}
     <script>
         jQuery(document).ready(function() {
-            $('.summernote').summernote();
+            //$('.summernote').summernote();
             $('#customer_bp_cover_file').prop('required', false);
             $('#customer_bp_cover_file').on('change', function() {
                 $(this).prop('required', true);
