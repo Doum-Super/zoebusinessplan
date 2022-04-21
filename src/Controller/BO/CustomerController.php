@@ -174,7 +174,8 @@ class CustomerController extends AbstractController
         $data = $writer->generateSheetData();
         $footer = $writer->generateHTMLFooter();
 
-        $style = $writer->generateStyles();
+        //$style = $writer->generateStyles();
+        $style = "";
 
         //$response = $header.$data.$footer;
         $html = $data;
