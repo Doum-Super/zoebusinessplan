@@ -107,7 +107,8 @@ class CustomerController extends AbstractController
          * Administrator variables set
          */
         foreach ($bpModel->getVariables() as $variable) {
-            $params = array_merge($params, [$variable->getName() => new ExcelParam(CellSetterStringValue::class, $variable->getValue())]);
+            $value = ($variable->getType() === 'number') ? (float) $variable->getValue() : $variable->getValue();
+            $params = array_merge($params, ['{'.$variable->getName().'}' => new ExcelParam(CellSetterStringValue::class, $value)]);
         }
 
         $customerBpModel = $entityManager->getRepository(CustomerBP::class)->findOneBy([
@@ -122,7 +123,7 @@ class CustomerController extends AbstractController
         if (null !== $customerBpModel) {
             foreach ($customerBpModel->getCustomerVariables() as $customerVariable) {
                 $variable = $customerVariable->getVariable();
-                $params = array_merge($params, [$variable->getName() => new ExcelParam(CellSetterStringValue::class, $variable->getValue())]);
+                $params = array_merge($params, ['{'.$variable->getName().'}' => new ExcelParam(CellSetterStringValue::class, $variable->getValue())]);
             }
 
             $params = array_merge($params, ['{project_summary}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getProjectSummary())]);

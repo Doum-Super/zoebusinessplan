@@ -61,10 +61,10 @@
                         <!--begin::Overlay-->
                         <div class="overlay">
                             <!--begin::Image-->
-                            <img class="w-100 card-rounded" src="{{ vich_uploader_asset(customerBpModel.cover) }}" alt="" w>
+                            <img class="w-100 card-rounded" src="{{ vich_uploader_asset(customerBpModel.cover) }}" alt="">
                             <!--end::Image-->
                             <!--begin::Links-->
-                            <div class="overlay-layer card-rounded bg-opacity-25 flex-column text-white">
+                            <div class="overlay-layer card-rounded bg-opacity-25 flex-column text-white{% if customerBpModel.cover|length == 0 %} position-relative{% endif %}">
                                 <div class="business_plan_title">Importation et vente de produits de gros</div>
                                 <div class="_bp my-5">Business Plan</div>
                                 <div class="business_name">Raison sociale de l'entreprise</div>
