@@ -14,8 +14,10 @@ use App\Form\CustomerBpType;
 use App\Helper\ControllerHelper;
 use App\Repository\BPModelRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Html;
+use PhpParser\Node\Stmt\TryCatch;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +55,7 @@ class CustomerController extends AbstractController
 
         $customerBpModel = (null === $customerBpModel) ? new CustomerBP() : $customerBpModel;
 
-        if (null === $customerBpModel->getId()) {
+        if (null === $customerBpModel->getId() || $customerBpModel->getCustomerVariables()->isEmpty()) {
             foreach ($variables as $variable) {
                 $customerVariable = new CustomerVariable();
                 $customerVariable->setVariable($variable);
@@ -123,7 +125,8 @@ class CustomerController extends AbstractController
         if (null !== $customerBpModel) {
             foreach ($customerBpModel->getCustomerVariables() as $customerVariable) {
                 $variable = $customerVariable->getVariable();
-                $params = array_merge($params, ['{'.$variable->getName().'}' => new ExcelParam(CellSetterStringValue::class, $variable->getValue())]);
+                $value = ($variable->getType() === 'number') ? (float) $customerVariable->getValue() : $customerVariable->getValue();
+                $params = array_merge($params, ['{'.$variable->getName().'}' => new ExcelParam(CellSetterStringValue::class, $value)]);
             }
 
             $params = array_merge($params, ['{project_summary}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getProjectSummary())]);
@@ -144,7 +147,13 @@ class CustomerController extends AbstractController
         $filename = 'result.xlsx';
         $outputFileName = $templateDir.$filename;
 
-        PhpExcelTemplator::saveToFile($inputFileName, $outputFileName, $params, [], []);
+        try {
+            PhpExcelTemplator::saveToFile($inputFileName, $outputFileName, $params);
+            //PhpExcelTemplator::outputToFile($inputFileName, $outputFileName, $params, [], []);
+        } catch (Exception $e) {
+            dump($e->getMessage());
+            die;
+        }
         //PhpExcelTemplator::outputToFile($inputFileName, $outputFileName, $params, [], []);
 
         $reader = IOFactory::createReaderForFile($outputFileName);
