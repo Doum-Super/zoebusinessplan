@@ -152,7 +152,7 @@ class CustomerController extends AbstractController
             //PhpExcelTemplator::outputToFile($inputFileName, $outputFileName, $params, [], []);
         } catch (Exception $e) {
             dump($e->getMessage());
-            die;
+            //die;
         }
         //PhpExcelTemplator::outputToFile($inputFileName, $outputFileName, $params, [], []);
 
