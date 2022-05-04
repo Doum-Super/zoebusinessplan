@@ -134,7 +134,10 @@ class CustomerController extends AbstractController
             $params = array_merge($params, ['{market_description}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getMarketDescription())]);
             $params = array_merge($params, ['{business_name}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getBusinessName())]);
             $params = array_merge($params, ['{beneficiary_fullname}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getBeneficiaryLastName().' '.$customerBpModel->getBeneficiaryFirstName())]);
-            $params = array_merge($params, ['{beneficiary_sex}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getBeneficiarySex())]);
+            
+            $sex = ($customerBpModel->getBeneficiarySex() === 'male') ? 'Homme' : 'Femme';
+            $params = array_merge($params, ['{beneficiary_sex}' => new ExcelParam(CellSetterStringValue::class, $sex)]);
+            
             $params = array_merge($params, ['{beneficiary_marital_status}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getBeneficiaryMaritalStatus())]);
             $params = array_merge($params, ['{beneficiary_study_level}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getBeneficiaryStudyLevel())]);
             $params = array_merge($params, ['{beneficiary_phone_number}' => new ExcelParam(CellSetterStringValue::class, $customerBpModel->getBeneficiaryPhoneNumber())]);
