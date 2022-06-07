@@ -62,10 +62,12 @@
 
 {% block javascripts %}
     <script src="{{ asset('/public/assets/bo/js/pages/crud/file-upload/image-input.js?v=7.0.5') }}"></script>
-    {#<script src="{{ asset('/assets/admin/js/pages/crud/forms/editors/summernote.js?v=7.0.5') }}"></script>#}
+    <script src="{{ asset('/public/assets/bo/js/pages/crud/forms/widgets/bootstrap-datepicker.js?v=7.0.5') }}"></script>
+    <script src="{{ asset('/public/assets/bo/js/pages/crud/forms/widgets/bootstrap-datepicker.fr.min.js') }}"></script>
+    <script src="{{ asset('/public/assets/bo/js/pages/crud/forms/editors/summernote.js?v=7.0.5') }}"></script>
     <script>
         jQuery(document).ready(function() {
-            //$('.summernote').summernote();
+            $('.summernote').summernote();
             $('#customer_bp_cover_file').prop('required', false);
             $('#customer_bp_cover_file').on('change', function() {
                 $(this).prop('required', true);
@@ -75,8 +77,19 @@
                 var fileName = $(this).val();
                 $(this).next('.custom-file-label').addClass("selected").html(fileName);
             });
+
+            $('.js-datepicker').datepicker({
+                rtl: KTUtil.isRTL(),
+                todayHighlight: true,
+                orientation: "bottom left",
+                autoclose: true,
+                format: 'dd/mm/yyyy',
+                language: 'fr'
+                //templates: arrows
+            });
         });
     </script>
 {% endblock %}
+
 
 

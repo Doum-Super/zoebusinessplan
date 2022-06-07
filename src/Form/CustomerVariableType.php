@@ -36,7 +36,6 @@ class CustomerVariableType extends AbstractType
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Variable'],
                 'query_builder' => function(EntityRepository $er) use ($bpModel) {
                     return $er->createQueryBuilder('v')
-                              //->where('v.bPModel = :bpModel')
                               ->leftJoin('v.bPModel', 'bpModel')
                               ->leftJoin('bpModel.bPModelRoles', 'bPModelRole')
                               ->leftJoin('bPModelRole.role', 'role')

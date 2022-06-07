@@ -66,8 +66,21 @@
         </div>
 
         <div class="form-group row">
+            <div class="col-lg-4">
+                {{ form_label(form.customerDateOfBirth) }}
+                {{ form_widget(form.customerDateOfBirth) }}
+                <small class="text-danger">{{ form_errors(form.customerDateOfBirth) }}</small>
+            </div>
+            <div class="col-lg-4">
+                {{ form_label(form.customerPlaceOfBirth) }}
+                {{ form_widget(form.customerPlaceOfBirth) }}
+                <small class="text-danger">{{ form_errors(form.customerPlaceOfBirth) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
             <div class="col-lg-6">
-                {{ form_label(form.marketDescription) }}<span class="text-danger">*</span>
+                {{ form_label(form.marketDescription) }}
                 {{ form_widget(form.marketDescription) }}
                 <small class="text-danger">{{ form_errors(form.marketDescription) }}</small>
             </div>
@@ -80,9 +93,48 @@
 
         <div class="form-group row">
             <div class="col-lg-6">
-                {{ form_label(form.projectSummary) }}<span class="text-danger">*</span>
+                {{ form_label(form.projectSummary) }}
                 {{ form_widget(form.projectSummary) }}
                 <small class="text-danger">{{ form_errors(form.projectSummary) }}</small>
+            </div>
+            <div class="col-lg-6">
+                {{ form_label(form.humanResource) }}
+                {{ form_widget(form.humanResource) }}
+                <small class="text-danger">{{ form_errors(form.humanResource) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-6">
+                {{ form_label(form.realizationProgram) }}
+                {{ form_widget(form.realizationProgram) }}
+                <small class="text-danger">{{ form_errors(form.realizationProgram) }}</small>
+            </div>
+             <div class="col-lg-6">
+                {{ form_label(form.materialResource) }}
+                {{ form_widget(form.materialResource) }}
+                <small class="text-danger">{{ form_errors(form.materialResource) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-6">
+                {{ form_label(form.workingCapitalComment) }}
+                {{ form_widget(form.workingCapitalComment) }}
+                <small class="text-danger">{{ form_errors(form.workingCapitalComment) }}</small>
+            </div>
+             <div class="col-lg-6">
+                {{ form_label(form.financingNeedsComment) }}
+                {{ form_widget(form.financingNeedsComment) }}
+                <small class="text-danger">{{ form_errors(form.financingNeedsComment) }}</small>
+            </div>
+        </div>
+
+        <div class="form-group row">
+             <div class="col-lg-6">
+                {{ form_label(form.revenueForecastComment) }}
+                {{ form_widget(form.revenueForecastComment) }}
+                <small class="text-danger">{{ form_errors(form.revenueForecastComment) }}</small>
             </div>
         </div>
 

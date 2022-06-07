@@ -90,6 +90,46 @@ class CustomerBP extends BaseEntity
      */
     private $projectSummary;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $customerDateOfBirth;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $customerPlaceOfBirth;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $humanResource;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $realizationProgram;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $materialResource;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $workingCapitalComment;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $financingNeedsComment;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $revenueForecastComment;
+
     public function __construct()
     {
         $this->variables = new ArrayCollection();
@@ -283,6 +323,102 @@ class CustomerBP extends BaseEntity
     public function setProjectSummary(?string $projectSummary): self
     {
         $this->projectSummary = $projectSummary;
+
+        return $this;
+    }
+
+    public function getCustomerDateOfBirth(): ?\DateTimeInterface
+    {
+        return $this->customerDateOfBirth;
+    }
+
+    public function setCustomerDateOfBirth(?\DateTimeInterface $customerDateOfBirth): self
+    {
+        $this->customerDateOfBirth = $customerDateOfBirth;
+
+        return $this;
+    }
+
+    public function getCustomerPlaceOfBirth(): ?string
+    {
+        return $this->customerPlaceOfBirth;
+    }
+
+    public function setCustomerPlaceOfBirth(?string $customerPlaceOfBirth): self
+    {
+        $this->customerPlaceOfBirth = $customerPlaceOfBirth;
+
+        return $this;
+    }
+
+    public function getHumanResource(): ?string
+    {
+        return $this->humanResource;
+    }
+
+    public function setHumanResource(?string $humanResource): self
+    {
+        $this->humanResource = $humanResource;
+
+        return $this;
+    }
+
+    public function getRealizationProgram(): ?string
+    {
+        return $this->realizationProgram;
+    }
+
+    public function setRealizationProgram(?string $realizationProgram): self
+    {
+        $this->realizationProgram = $realizationProgram;
+
+        return $this;
+    }
+
+    public function getMaterialResource(): ?string
+    {
+        return $this->materialResource;
+    }
+
+    public function setMaterialResource(?string $materialResource): self
+    {
+        $this->materialResource = $materialResource;
+
+        return $this;
+    }
+
+    public function getWorkingCapitalComment(): ?string
+    {
+        return $this->workingCapitalComment;
+    }
+
+    public function setWorkingCapitalComment(?string $workingCapitalComment): self
+    {
+        $this->workingCapitalComment = $workingCapitalComment;
+
+        return $this;
+    }
+
+    public function getFinancingNeedsComment(): ?string
+    {
+        return $this->financingNeedsComment;
+    }
+
+    public function setFinancingNeedsComment(?string $financingNeedsComment): self
+    {
+        $this->financingNeedsComment = $financingNeedsComment;
+
+        return $this;
+    }
+
+    public function getRevenueForecastComment(): ?string
+    {
+        return $this->revenueForecastComment;
+    }
+
+    public function setRevenueForecastComment(?string $revenueForecastComment): self
+    {
+        $this->revenueForecastComment = $revenueForecastComment;
 
         return $this;
     }
