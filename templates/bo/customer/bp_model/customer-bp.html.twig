@@ -55,9 +55,9 @@
                             {% if form.customerVariables|length %}
                                 <div class="form-group">
                                     {#{ form_label(form.customerVariables) }#}
-                                    {% for customerVariable in form.customerVariables %}
-                                        <div class="row mt-5">
-                                            <div class="col-lg-4">
+                                    <div class="row mt-5">
+                                        {% for customerVariable in form.customerVariables %}
+                                            <div class="col-lg-3">
                                                 <label for="">
                                                     {% if customerVariable.vars.data.variable.definition|length %}
                                                         {{ customerVariable.vars.data.variable.definition }}
@@ -68,13 +68,13 @@
                                                 {{ form_widget(customerVariable.variable) }}
                                                 {{ form_errors(customerVariable.variable) }}
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-3">
                                                 {{ form_label(customerVariable.value) }}
                                                 {{ form_widget(customerVariable.value) }}
                                                 {{ form_errors(customerVariable.value) }}
                                             </div>
-                                        </div>
-                                    {% endfor %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             {% endif %}
                             
