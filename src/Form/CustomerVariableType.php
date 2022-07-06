@@ -18,7 +18,7 @@ class CustomerVariableType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $variables = $options['variables'];
+        $customerVariables = $options['variables'];
         $bpModel = $options['bpModel'];
         $propertyPath = isset($options['property_path']) ? $options['property_path'] : null;
         $index = 0;
@@ -34,22 +34,28 @@ class CustomerVariableType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Variable',
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Variable'],
-                'query_builder' => function(EntityRepository $er) use ($bpModel) {
+                'query_builder' => function(EntityRepository $er) use ($bpModel, $customerVariables) {
+                    $variables = [];
+                    foreach ($customerVariables as $customerVariable) {
+                        $variables [] = $customerVariable->getVariable();
+                    }
+                    //dump($variables); die;
                     return $er->createQueryBuilder('v')
-                              ->leftJoin('v.bPModel', 'bpModel')
-                              ->leftJoin('bpModel.bPModelRoles', 'bPModelRole')
-                              ->leftJoin('bPModelRole.role', 'role')
-                              ->where('bpModel.id = :id')
-                              ->andWhere('role.code = :role')
-                              ->setParameter('id', $bpModel->getId())
-                              ->setParameter('role', 'ROLE_CUSTOMER')
+                              //->leftJoin('v.bPModel', 'bpModel')
+                              //->leftJoin('bpModel.bPModelRoles', 'bPModelRole')
+                              //->leftJoin('bPModelRole.role', 'role')
+                              //->leftJoin('bPModelRole.variables', 'variable')
+                              //->where('bpModel.id = :id')
+                              //->andWhere('role.code = :role')
+                              ->andWhere('v IN (:variables)')
+                              //->setParameter('id', $bpModel->getId())
+                              //->setParameter('role', 'ROLE_CUSTOMER')
+                              ->setParameter('variables', $variables)
                             ;
                 }
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($variables, $index) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($customerVariables, $index) {
                 $form = $event->getForm();
-
-                //dump($variables); die;
 
                 $params = [
                     'label' => 'Valeur de la variable',
@@ -57,7 +63,7 @@ class CustomerVariableType extends AbstractType
                     'required' => false
                 ];
         
-                if (isset($variables[$index]) && null !== $variables[$index]->getVariable() && $variables[$index]->getVariable()->getType() === 'number') {
+                if (isset($customerVariables[$index]) && null !== $customerVariables[$index]->getVariable() && $customerVariables[$index]->getVariable()->getType() === 'number') {
                     $params['html5'] = true;
                     $form
                         ->add('value', NumberType::class, $params);

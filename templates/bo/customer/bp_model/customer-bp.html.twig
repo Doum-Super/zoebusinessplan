@@ -43,73 +43,106 @@
         <div class="card">
             <!--begin::Body-->
             <div class="card-body p-lg-17">
-                <!--begin::About-->
-                <div class="mb-18">
-                    <!--begin::Wrapper-->
-                    <div class="mb-10">
-                        <!--begin::Top-->
-                        {#<div class="text-center mb-15">
-                            <!--begin::Title-->
-                            <h3 class="fs-2hx text-dark mb-5">About Us</h3>
-                            <!--end::Title-->
+                {{ form_start(form,  { 'attr': {'class': 'form'} }) }}
+                    <!--begin::About-->
+                    <div class="mb-18">
+                        <!--begin::Description-->
+                        <div class="fs-5 fw-bold text-gray-600">
                             <!--begin::Text-->
-                            <div class="fs-5 text-muted fw-bold">Within the last 10 years, we have sold over 100,000 admin theme copies that have been 
-                            <br>successfully deployed by small businesses to global enterprises</div>
-                            <!--end::Text-->
-                        </div>#}
-                        <!--end::Top-->
-                        <!--begin::Overlay-->
-                        <div class="overlay">
-                            {% if customerBpModel|length and customerBpModel.cover|length %}
-                                <!--begin::Image-->
-                                <img class="w-100 card-rounded" src="{{ vich_uploader_asset(customerBpModel.cover) }}" alt="">
-                                <!--end::Image-->
-                            {% endif %}
-                            <!--begin::Links-->
-                            <div class="overlay-layer card-rounded bg-opacity-25 flex-column text-white{% if customerBpModel|length and customerBpModel.cover|length == 0 %} position-relative{% endif %}">
-                                <div class="business_plan_title">Importation et vente de produits de gros</div>
-                                <div class="_bp my-5">Business Plan</div>
-                                <div class="business_name">Raison sociale de l'entreprise</div>
-                            </div>
-                            <!--end::Links-->
-                        </div>
-                        <!--end::Container-->
-                    </div>
-                    <!--end::Wrapper-->
-                    <!--begin::Description-->
-                    {#<div class="fs-5 fw-bold text-gray-600">
-                        <!--begin::Text-->
-                        <p class="mb-8">First, a disclaimer – the entire process of writing a blog post often takes more than a couple of hours, even if you can type eighty words per minute and your writing skills are sharp. From the seed of the idea to finally hitting “Publish,” you might spend several days or maybe even a week “writing” a blog post, but it’s important to spend those vital hours planning your post and even thinking about 
-                        <a href="/metronic8/demo1/../demo1/pages/blog/post.html" class="link-primary pe-1">Your Post</a>(yes, thinking counts as working if you’re a blogger) before you actually write it.</p>
-                        <!--end::Text-->
-                        <!--begin::Text-->
-                        <p class="mb-8">There’s an old maxim that states, 
-                        <span class="text-gray-800 pe-1">“No fun for the writer, no fun for the reader.”</span>No matter what industry you’re working in, as a blogger, you should live and die by this statement.</p>
-                        <!--end::Text-->
-                        <!--begin::Text-->
-                        <p class="mb-8">Before you do any of the following steps, be sure to pick a topic that actually interests you. Nothing – and 
-                        <a href="/metronic8/demo1/../demo1/pages/blog/home.html" class="link-primary pe-1">I mean NOTHING</a>– will kill a blog post more effectively than a lack of enthusiasm from the writer. You can tell when a writer is bored by their subject, and it’s so cringe-worthy it’s a little embarrassing.</p>
-                        <!--end::Text-->
-                        <!--begin::Text-->
-                        <p class="mb-17">I can hear your objections already. “But Dan, I have to blog for a cardboard box manufacturing company.” I feel your pain, I really do. During the course of my career, I’ve written content for dozens of clients in some less-than-thrilling industries (such as financial regulatory compliance and corporate housing), but the hallmark of a professional blogger is the ability to write well about any topic, no matter how dry it may be. Blogging is a lot easier, however, if you can muster at least a little enthusiasm for the topic at hand.</p>
-                        <!--end::Text-->
-                    </div>#}
-                    <!--end::Description-->
-                </div>
-                <!--end::About-->
+                            <h2 class="mb-8 text-center">Mon Business Plan</h2>
+                            <p><b>1. Remplir les données concernant les "variables principales". Les calculs se font automatiquement:</b></p>
 
-                <!--begin::Section-->
-                <div class="mb-16">
-                    <div class="table-responsive">
-                        {% for table in content %}
-                            {{ table|raw }}
-                        {% endfor %}
+                            {% if form.customerVariables|length %}
+                                <div class="form-group">
+                                    {#{ form_label(form.customerVariables) }#}
+                                    {% for customerVariable in form.customerVariables %}
+                                        <div class="row mt-5">
+                                            <div class="col-lg-4">
+                                                <label for="">
+                                                    {% if customerVariable.vars.data.variable.definition|length %}
+                                                        {{ customerVariable.vars.data.variable.definition }}
+                                                    {% else %}
+                                                        {{ customerVariable.vars.data.variable.name }}
+                                                    {% endif %}
+                                                </label>
+                                                {{ form_widget(customerVariable.variable) }}
+                                                {{ form_errors(customerVariable.variable) }}
+                                            </div>
+                                            <div class="col-lg-4">
+                                                {{ form_label(customerVariable.value) }}
+                                                {{ form_widget(customerVariable.value) }}
+                                                {{ form_errors(customerVariable.value) }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            {#<div class="form-group row">
+                                {% for customerVariable in customerVariables %}
+                                    {% set varName = customerVariable.variable.name %}
+                                    <div class="col-lg-4">
+                                        <label for="{{ varName }}" class="form-label">{{ customerVariable.variable.definition }}</label>
+                                        <input type="text" class="form-control" id="{{ varName }}" aria-describedby="{{ varName }}Help" value="{{ customerVariable.value }}">
+                                    </div>
+                                {% endfor %}
+                            </div>#}
+
+                            <p><b>2. Indiquer les informations suivantes:</b></p>
+
+                        </div>
+                        <!--end::Description-->
                     </div>
-                </div>
-                <!--end::Section-->
+                    <!--end::About-->
+
+                    <!--begin::Section-->
+                    <div class="mb-16">
+                        <div class="table">
+                            {% for table in content[2:] %}
+                                {{ decode(table)|raw }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!--end::Section-->
+
+                    <div class='text-center'>
+                        <button type='submit' class='btn btn-success'>Generer mon Business Plan</button>
+                    </div>
+                    {% do form.customerVariables.setRendered %}
+                    {% do form.customerPlaceOfBirth.setRendered %}
+                {{ form_end(form) }}
             </div>
             <!--end::Body-->
         </div>
         <!--end::About card-->
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/public/assets/bo/js/pages/crud/forms/editors/summernote.js?v=7.0.5') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            $('._text_editor_').summernote();
+
+            $("#customer_bp_light_businessName").parent().appendTo("#beneficiaryBusinessName");
+            $("#customer_bp_light_beneficiaryFirstName").parent().appendTo("#beneficiaryLastName");
+            $("#customer_bp_light_beneficiaryLastName").parent().appendTo("#beneficiaryFirstName");
+            $("#customer_bp_light_beneficiarySex").parent().appendTo("#beneficiarySex");
+            $("#customer_bp_light_beneficiaryMaritalStatus").parent().appendTo("#beneficiaryMaritalStatus");
+            $("#customer_bp_light_beneficiaryStudyLevel").parent().appendTo("#beneficiaryStudyLevel");
+            $("#customer_bp_light_beneficiaryPhoneNumber").parent().appendTo("#beneficiaryPhoneNumber");
+            $("#customer_bp_light_beneficiaryAddress").parent().appendTo("#beneficiaryAddress");
+            
+            $("#customer_bp_light_projectSummary").parent().appendTo("#projectSummary");
+            $("#customer_bp_light_projectDescription").parent().appendTo("#projectDescription");
+            $("#customer_bp_light_materialResource").parent().appendTo("#materialResource");
+            $("#customer_bp_light_humanResource").parent().appendTo("#humanResource");
+            $("#customer_bp_light_marketDescription").parent().appendTo("#marketDescription");
+            $("#customer_bp_light_workingCapitalComment").parent().appendTo("#workingCapitalComment");
+            $("#customer_bp_light_financingNeedsComment").parent().appendTo("#financingNeedsComment");
+            $("#customer_bp_light_revenueForecastComment").parent().appendTo("#revenueForecastComment");
+            $("#customer_bp_light_customerDateOfBirth").parent().appendTo("#customerDateOfBirth");
+            $("#customer_bp_light_realizationProgram").parent().appendTo("#realizationProgram");
+        });
+    </script>
 {% endblock %}
