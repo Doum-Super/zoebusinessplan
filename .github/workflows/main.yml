@@ -18,10 +18,10 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@2.0.0
       with:
-        FTP_SERVER: ${{ secrets.ftp_host }}
-        FTP_USERNAME: ${{ secrets.ftp_user }}
-        FTP_PASSWORD: ${{ secrets.ftp_password }}
-        remote_dir: "/home/zoebzbmi/backoffice.zoebusinessplan.com/"
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        remote_dir: /home/zoebzbmi/backoffice.zoebusinessplan.com/
         #dangerous-clean-slate: false
         #exclude: |
         #  **/.git*
