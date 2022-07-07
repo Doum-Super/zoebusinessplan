@@ -21,7 +21,7 @@ jobs:
         server: ${{ secrets.ftp_server }}
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
-        server_dir: "/home/zoebzbmi/backoffice.zoebusinessplan.com/"
+        server-dir: "/home/zoebzbmi/backoffice.zoebusinessplan.com/"
         dangerous-clean-slate: false
         exclude: |
           **/.git*
