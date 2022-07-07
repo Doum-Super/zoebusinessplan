@@ -1,0 +1,31 @@
+on: push
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v2
+      
+    - name: 🔨 Build Project
+      run: |
+        export APP_ENV=dev
+        composer install --optimize-autoloader
+        APP_ENV=dev APP_DEBUG=1 php bin/console cache:clear
+        mkdir -p var && chmod -R 777 var
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@4.2.0
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        dangerous-clean-slate: false
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/var/**
+          **/npm-debug.log*
+          **/.env.*.local*
+          **/config/secrets/prod/prod.decrypt.private.php*
