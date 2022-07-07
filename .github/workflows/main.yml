@@ -21,6 +21,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
+        token: ${{ secrets.TOKEN }}
         server-dir: "/home/zoebzbmi/backoffice.zoebusinessplan.com/"
         dangerous-clean-slate: false
         exclude: |
