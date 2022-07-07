@@ -9,10 +9,13 @@ jobs:
       uses: actions/checkout@v2
     
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
-      with:
-        server: ftp.zoebusinessplan.com
-        username: backoffice@backoffice.zoebusinessplan.com
-        password: ${{ secrets.FTP_PASSWORD }}
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        #server: ftp.zoebusinessplan.com
+        #username: backoffice@backoffice.zoebusinessplan.com
+        #password: ${{ secrets.FTP_PASSWORD }}
+        FTP_SERVER: ${{ secrets.FTP_HOST }}
+        FTP_USERNAME: ${{ secrets.ftp_user }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         port: 21
         server-dir: /home/zoebzbmi/backoffice.zoebusinessplan.com/
