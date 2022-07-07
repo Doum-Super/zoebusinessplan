@@ -17,5 +17,5 @@ jobs:
         FTP_SERVER: ${{ secrets.FTP_HOST }}
         FTP_USERNAME: ${{ secrets.ftp_user }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        port: 21
-        server-dir: /home/zoebzbmi/backoffice.zoebusinessplan.com/
+        PORT: 21
+        REMOTE_DIR: /home/zoebzbmi/backoffice.zoebusinessplan.com/
