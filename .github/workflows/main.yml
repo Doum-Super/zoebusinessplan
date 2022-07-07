@@ -14,3 +14,5 @@ jobs:
         server: ftp.zoebusinessplan.com
         username: backoffice@backoffice.zoebusinessplan.com
         password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        server-dir: /home/zoebzbmi/backoffice.zoebusinessplan.com/
