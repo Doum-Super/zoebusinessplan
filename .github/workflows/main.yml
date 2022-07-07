@@ -19,8 +19,9 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
         server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
+        username: ${{ secrets.FTP_USER }}
         password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: "/backoffice.zoebusinessplan.com/"
         dangerous-clean-slate: false
         exclude: |
           **/.git*
