@@ -20,27 +20,32 @@ class CustomerBPLightType extends AbstractType
         $variables = $options['variables'];
         $builder
             ->add('businessName', TextType::class, [
-                'label' => "Raison sociale de l'entreprise",
+                //'label' => "Raison sociale de l'entreprise",
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => "Raison sociale de l'entreprise"],
                 'required' => false
             ])
             ->add('projectDescription', TextareaType::class, [
-                'label' => 'Description du projet',
+                //'label' => 'Description du projet',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Description du projet'],
                 'required' => false
             ])
             ->add('beneficiaryFirstName', TextType::class, [
-                'label' => 'Prénom du beneficiaire',
+                //'label' => 'Prénom du beneficiaire',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Prénom du beneficiaire'],
                 'required' => false
             ])
             ->add('beneficiaryLastName', TextType::class, [
-                'label' => 'Nom du beneficiaire',
+                //'label' => 'Nom du beneficiaire',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Nom du beneficiaire'],
                 'required' => false
             ])
             ->add('beneficiarySex', ChoiceType::class, [
-                'label' => 'Sexe du beneficiaire',
+                //'label' => 'Sexe du beneficiaire',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Sexe du beneficiaire'],
                 'choices' => [
                     'Homme' => 'male',
@@ -49,7 +54,8 @@ class CustomerBPLightType extends AbstractType
                 //'required' => false
             ])
             ->add('beneficiaryMaritalStatus', ChoiceType::class, [
-                'label' => 'Situation matrimoniale du beneficiaire',
+                //'label' => 'Situation matrimoniale du beneficiaire',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Situation matrimoniale'],
                 'choices' => [
                     'Célibataire' => 'célibataire',
@@ -58,17 +64,20 @@ class CustomerBPLightType extends AbstractType
                 //'required' => false
             ])
             ->add('beneficiaryPhoneNumber', TextType::class, [
-                'label' => 'Numéro du beneficiaire',
+                //'label' => 'Numéro du beneficiaire',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Numéro du beneficiaire'],
                 'required' => false
             ])
             ->add('beneficiaryAddress', TextType::class, [
-                'label' => 'Adresse du beneficiaire',
+                //'label' => 'Adresse du beneficiaire',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Adresse du beneficiaire'],
                 'required' => false
             ])
             ->add('beneficiaryStudyLevel',  ChoiceType::class, [
-                'label' => "Niveau d'étude du beneficiaire",
+                //'label' => "Niveau d'étude du beneficiaire",
+                'label' => false,
                 'attr' => ['class' => 'form-control'],
                 'choices' => [
                     'BAC' => 'BAC',
@@ -81,17 +90,20 @@ class CustomerBPLightType extends AbstractType
                 'required' => false
             ])
             ->add('marketDescription', TextareaType::class, [
-                'label' => 'Description du marchet',
+                //'label' => 'Description du marchet',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Description du marchet'],
                 'required' => false
             ])
             ->add('projectSummary', TextareaType::class, [
-                'label' => 'Resumé du projet',
+                //'label' => 'Resumé du projet',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Resumé du projet'],
                 'required' => false
             ])
             ->add('customerDateOfBirth', DateType::class, [
-                'label' => 'Date de naissance',
+                //'label' => 'Date de naissance',
+                'label' => false,
                 'widget' => 'single_text',
                 'format' => 'dd/MM/yyyy',
                 'html5' => false,
@@ -99,43 +111,51 @@ class CustomerBPLightType extends AbstractType
                 'required' => false
             ])
             ->add('customerPlaceOfBirth', TextType::class, [
-                'label' => 'Lieu de naissance',
+                //'label' => 'Lieu de naissance',
+                'label' => false,
                 'attr' => ['class' => 'form-control', 'placeholder' => 'Lieu de naissance'],
                 'required' => false
             ])
             ->add('humanResource', TextareaType::class, [
-                'label' => 'Moyens humains',
+                //'label' => 'Moyens humains',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Moyens humains'],
                 'required' => false
             ])
             ->add('realizationProgram', TextareaType::class, [
-                'label' => 'Programme de réalisation',
+                //'label' => 'Programme de réalisation',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Programme de réalisation'],
                 'required' => false
             ])
             ->add('materialResource', TextareaType::class, [
-                'label' => 'Moyens matériels',
+                //'label' => 'Moyens matériels',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Moyens matériels'],
                 'required' => false
             ])
             ->add('workingCapitalComment', TextareaType::class, [
-                'label' => 'Commentaire du tableau de fond de roulement',
+                //'label' => 'Commentaire du tableau de fond de roulement',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Commentaire du tableau de fond de roulement'],
                 'required' => false
             ])
             ->add('financingNeedsComment', TextareaType::class, [
-                'label' => 'Commentaire du tableau de besoins de financement',
+                //'label' => 'Commentaire du tableau de besoins de financement',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Commentaire du tableau de besoins de financement'],
                 'required' => false
             ])
             ->add('revenueForecastComment', TextareaType::class, [
-                'label' => 'Commentaire du tableau de prévision des recettes',
+                //'label' => 'Commentaire du tableau de prévision des recettes',
+                'label' => false,
                 'attr' => ['class' => 'form-control summernote', 'placeholder' => 'Commentaire du tableau de prévision des recettes'],
                 'required' => false
             ])
             ->add('customerVariables', CollectionType::class, [
                 'entry_type' => CustomerVariableType::class,
-                'label' => 'Variables BP à modifier',
+                'label' => false,
+                //'label' => 'Variables BP à modifier',
                 'entry_options' => ['label' => false, 'variables' => $variables, 'bpModel' => $bpModel],
                 'allow_add' => true,
                 'allow_delete' => true,
