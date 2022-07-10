@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
     - name: 🔨 Build Project
       run: |
@@ -16,17 +16,12 @@ jobs:
         mkdir -p var && chmod -R 777 var
     
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@4.2.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USER }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: "/backoffice.zoebusinessplan.com/"
-        dangerous-clean-slate: false
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/var/**
-          **/npm-debug.log*
-          **/.env.*.local*
-          **/config/secrets/prod/prod.decrypt.private.php*
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        REMOTE_DIR: /home/zoebzbmi/backoffice.zoebusinessplan.com
+        METHOD: ftp
+        PORT: 21
+        ARGS: --verbose
