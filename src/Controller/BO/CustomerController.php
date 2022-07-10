@@ -131,11 +131,13 @@ class CustomerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush($customerBpModel);
 
-            return $this->redirectToRoute('bo_customer_bp_model_generate');
+            return $this->redirectToRoute('bo_customer_bp_model_generate', [
+                'id' => $bpModel->getId()
+            ]);
         }
 
-        $outputHtml = $this->generateHtml($customerBpModel, $bpModel, $params);
         $currentRouteName = $request->get('_route');
+        $outputHtml = ($currentRouteName === 'bo_customer_bp_model_setting') ? $this->generateHtml($customerBpModel, $bpModel, $params, false) : $this->generateHtml($customerBpModel, $bpModel, $params, true);
         $parameters = [
             'content' => $outputHtml,
             'customerBpModel' => $customerBpModel,
@@ -160,7 +162,7 @@ class CustomerController extends AbstractController
         //die;
     }
 
-    public function generateHtml(CustomerBP $customerBpModel, BPModel $bpModel, array $params): array
+    public function generateHtml(CustomerBP $customerBpModel, BPModel $bpModel, array $params, $isFinal = false): array
     {
         $templateDir = __DIR__.'/../../../public/files/doc/';
         $inputFileName = $templateDir.$bpModel->getModelFile()->getFileName();
@@ -176,29 +178,48 @@ class CustomerController extends AbstractController
                 $value = ($variable->getType() === 'number') ? (float) $customerVariable->getValue() : $customerVariable->getValue();
                 $params = array_merge($params, ['{'.$variable->getName().'}' => new ExcelParam(CellSetterStringValue::class, $value)]);
             }
+ 
 
-            $params = array_merge($params, ['{project_summary}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='projectSummary'></div>")]);
-            $params = array_merge($params, ['{project_description}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='projectDescription'></div>")]);
-            $params = array_merge($params, ['{material_resources}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='materialResource'></div>")]);
-            $params = array_merge($params, ['{human_resources}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='humanResource'></div>")]);
-            $params = array_merge($params, ['{realization_program}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='realizationProgram'></div>")]);
-            $params = array_merge($params, ['{market_description}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='marketDescription'></div>")]);
-            $params = array_merge($params, ['{working_capital_comment}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='workingCapitalComment'></div>")]);
-            $params = array_merge($params, ['{financing_needs_comment}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='financingNeedsComment'></div>")]);
-            $params = array_merge($params, ['{revenue_forecast_comment}' => new ExcelParam(CellSetterStringValue::class, "<div class='_text_editor_' id='revenueForecastComment'></div>")]);
+            $projectSummary = ($isFinal) ? $customerBpModel->getProjectSummary() : "<div class='_text_editor_' id='projectSummary'></div>";
+            $projectDescription = ($isFinal) ? $customerBpModel->getProjectDescription() : "<div class='_text_editor_' id='projectDescription'></div>";
+            $materialResources = ($isFinal) ? $customerBpModel->getMaterialResource() : "<div class='_text_editor_' id='materialResource'></div>";
+            $humanResources = ($isFinal) ? $customerBpModel->getHumanResource() : "<div class='_text_editor_' id='humanResource'></div>";
+            $realizationProgram = ($isFinal) ? $customerBpModel->getRealizationProgram() : "<div class='_text_editor_' id='realizationProgram'></div>";
+            $marketDescription = ($isFinal) ? $customerBpModel->getMarketDescription() : "<div class='_text_editor_' id='marketDescription'></div>";
+            $workingCapitalComment = ($isFinal) ? $customerBpModel->getWorkingCapitalComment() : "<div class='_text_editor_' id='workingCapitalComment'></div>";
+            $financingNeedsComment = ($isFinal) ? $customerBpModel->getFinancingNeedsComment() : "<div class='_text_editor_' id='financingNeedsComment'></div>";
+            $revenueForecastComment = ($isFinal) ? $customerBpModel->getRevenueForecastComment() : "<div class='_text_editor_' id='revenueForecastComment'></div>";
+            $businessName = ($isFinal) ? $customerBpModel->getBusinessName() : "<div class='_input_text_' id='beneficiaryBusinessName'></div>";
+            $beneficiaryFullname = ($isFinal) ? $customerBpModel->getBeneficiaryLastName().' '.$customerBpModel->getBeneficiaryLastName() : "<div class='_input_text_' id='beneficiaryLastName'></div><div class='_input_text_' id='beneficiaryFirstName'></div>";
+            $beneficiarySex = ($isFinal) ? $customerBpModel->getBeneficiarySex() : "<div class='_input_text_' id='beneficiarySex'></div>";
+            $beneficiaryMaritalStatus = ($isFinal) ? $customerBpModel->getBeneficiaryMaritalStatus() : "<div class='_input_text_' id='beneficiaryMaritalStatus'></div>";
+            $beneficiaryStudyLevel = ($isFinal) ? $customerBpModel->getBeneficiaryStudyLevel() : "<div class='_input_text_' id='beneficiaryStudyLevel'></div>";
+            $beneficiaryPhoneNumber = ($isFinal) ? $customerBpModel->getBeneficiaryPhoneNumber() : "<div class='_input_text_' id='beneficiaryPhoneNumber'></div>";
+            $beneficiaryAddress = ($isFinal) ? $customerBpModel->getBeneficiaryAddress() : "<div class='_input_text_' id='beneficiaryAddress'></div>";
+            $beneficiaryDdn = ($isFinal) ? $customerBpModel->getCustomerDateOfBirth()->format('dd-mm-yyy') : "<div class='_input_text_' id='customerDateOfBirth'></div>";
+
+            $params = array_merge($params, ['{project_summary}' => new ExcelParam(CellSetterStringValue::class, $projectSummary)]);
+            $params = array_merge($params, ['{project_description}' => new ExcelParam(CellSetterStringValue::class, $projectDescription)]);
+            $params = array_merge($params, ['{material_resources}' => new ExcelParam(CellSetterStringValue::class, $materialResources)]);
+            $params = array_merge($params, ['{human_resources}' => new ExcelParam(CellSetterStringValue::class, $humanResources)]);
+            $params = array_merge($params, ['{realization_program}' => new ExcelParam(CellSetterStringValue::class, $realizationProgram)]);
+            $params = array_merge($params, ['{market_description}' => new ExcelParam(CellSetterStringValue::class, $marketDescription)]);
+            $params = array_merge($params, ['{working_capital_comment}' => new ExcelParam(CellSetterStringValue::class, $workingCapitalComment)]);
+            $params = array_merge($params, ['{financing_needs_comment}' => new ExcelParam(CellSetterStringValue::class, $financingNeedsComment)]);
+            $params = array_merge($params, ['{revenue_forecast_comment}' => new ExcelParam(CellSetterStringValue::class, $revenueForecastComment)]);
 
 
-            $params = array_merge($params, ['{business_name}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiaryBusinessName'></div>")]);
-            $params = array_merge($params, ['{beneficiary_fullname}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiaryLastName'></div><div class='_input_text_' id='beneficiaryFirstName'></div>")]);
+            $params = array_merge($params, ['{business_name}' => new ExcelParam(CellSetterStringValue::class, $businessName)]);
+            $params = array_merge($params, ['{beneficiary_fullname}' => new ExcelParam(CellSetterStringValue::class, $beneficiaryFullname)]);
             
             $sex = ($customerBpModel->getBeneficiarySex() === 'male') ? 'Homme' : 'Femme';
-            $params = array_merge($params, ['{beneficiary_sex}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiarySex'></div>")]);
+            $params = array_merge($params, ['{beneficiary_sex}' => new ExcelParam(CellSetterStringValue::class, $beneficiarySex)]);
             
-            $params = array_merge($params, ['{beneficiary_marital_status}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiaryMaritalStatus'></div>")]);
-            $params = array_merge($params, ['{beneficiary_study_level}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiaryStudyLevel'></div>")]);
-            $params = array_merge($params, ['{beneficiary_phone_number}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiaryPhoneNumber'></div>")]);
-            $params = array_merge($params, ['{beneficiary_address}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='beneficiaryAddress'></div>")]);
-            $params = array_merge($params, ['{beneficiary_ddn}' => new ExcelParam(CellSetterStringValue::class, "<div class='_input_text_' id='customerDateOfBirth'></div>")]);
+            $params = array_merge($params, ['{beneficiary_marital_status}' => new ExcelParam(CellSetterStringValue::class, $beneficiaryMaritalStatus)]);
+            $params = array_merge($params, ['{beneficiary_study_level}' => new ExcelParam(CellSetterStringValue::class, $beneficiaryStudyLevel)]);
+            $params = array_merge($params, ['{beneficiary_phone_number}' => new ExcelParam(CellSetterStringValue::class, $beneficiaryPhoneNumber)]);
+            $params = array_merge($params, ['{beneficiary_address}' => new ExcelParam(CellSetterStringValue::class, $beneficiaryAddress)]);
+            $params = array_merge($params, ['{beneficiary_ddn}' => new ExcelParam(CellSetterStringValue::class, $beneficiaryDdn)]);
         } 
         //}
 
